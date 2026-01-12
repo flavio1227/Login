@@ -56,7 +56,7 @@ const LoginForm = () => {
           <div className="flex flex-col items-center mb-8">
             <div className="w-full max-w-[240px] max-h-[240px] sm:max-w-[200px] sm:max-h-[200px] flex items-center justify-center mb-4">
               <img
-                src="/logo.svg"
+                src={`${import.meta.env.BASE_URL}logo.svg`}
                 alt="Logo"
                 className="w-full h-full max-w-full max-h-full object-contain"
                 style={{ maxWidth: '240px', maxHeight: '240px' }}
