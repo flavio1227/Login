@@ -54,11 +54,14 @@ const LoginForm = () => {
       <div className="w-full max-w-md">
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-slate-700/50">
           <div className="flex flex-col items-center mb-8">
-            <img
-              src="/logo.svg"
-              alt="Logo"
-              className="w-32 h-32 object-contain mb-4"
-            />
+            <div className="w-full max-w-[240px] max-h-[240px] sm:max-w-[200px] sm:max-h-[200px] flex items-center justify-center mb-4">
+              <img
+                src="/logo.svg"
+                alt="Logo"
+                className="w-full h-full max-w-full max-h-full object-contain"
+                style={{ maxWidth: '240px', maxHeight: '240px' }}
+              />
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
