@@ -28,16 +28,45 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    // Timeout de seguridad: si Firebase no responde en 5 segundos, mostrar login
+    const timeoutId = setTimeout(() => {
+      console.warn('Firebase no respondió a tiempo, mostrando login...');
       setLoading(false);
-    });
+    }, 5000);
 
-    return unsubscribe;
+    try {
+      const unsubscribe = onAuthStateChanged(
+        auth,
+        (user) => {
+          clearTimeout(timeoutId);
+          setUser(user);
+          setLoading(false);
+        },
+        (error) => {
+          clearTimeout(timeoutId);
+          console.error('Error de autenticación:', error);
+          setLoading(false);
+        }
+      );
+
+      return () => {
+        clearTimeout(timeoutId);
+        unsubscribe();
+      };
+    } catch (error) {
+      clearTimeout(timeoutId);
+      console.error('Error al inicializar Firebase:', error);
+      setLoading(false);
+    }
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error: any) {
+      console.error('Error al iniciar sesión:', error);
+      throw error;
+    }
   };
 
   const signOut = async () => {

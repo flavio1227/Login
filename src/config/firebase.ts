@@ -1,5 +1,5 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { initializeApp, FirebaseApp } from 'firebase/app';
+import { getAuth, Auth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA_KRg3gquEfNTGVBpX5LXsy90kImNNYSc",
@@ -11,5 +11,16 @@ const firebaseConfig = {
   measurementId: "G-CDHXQFPS5F"
 };
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+let app: FirebaseApp;
+let auth: Auth;
+
+try {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  console.log('✅ Firebase inicializado correctamente');
+} catch (error) {
+  console.error('❌ Error al inicializar Firebase:', error);
+  throw error;
+}
+
+export { auth };
