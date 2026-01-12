@@ -8,7 +8,17 @@ function App() {
 
   useEffect(() => {
     if (!loading && user) {
-      window.location.href = SHELL_URL;
+      // Verificar si hay un parámetro redirect en la URL (viene de otra app como CALCUMIN)
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectUrl = urlParams.get('redirect');
+      
+      if (redirectUrl) {
+        // Redirigir a la URL de donde vino (ej: CALCUMIN)
+        window.location.href = redirectUrl;
+      } else {
+        // Redirigir al Shell principal por defecto
+        window.location.href = SHELL_URL;
+      }
     }
   }, [user, loading]);
 
