@@ -1,4 +1,4 @@
-import { useEffect, useState, ReactNode } from 'react';
+import { useEffect, useState, ReactNode, useRef } from 'react';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth } from './config/firebase'; // Ajusta la ruta según tu estructura
 
@@ -10,11 +10,12 @@ interface AuthGuardProps {
 /**
  * Componente que protege rutas/componentes requiriendo autenticación
  * Si el usuario no está logueado, redirige al login
- * Si está logueado, muestra el contenido protegido
+ * Si está logueado, muestra el contenido protegido SIN redirigir
  */
 export const AuthGuard = ({ children, loginUrl = 'https://flavio1227.github.io/Login/' }: AuthGuardProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const hasRedirected = useRef(false); // Prevenir redirecciones múltiples
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(
@@ -23,18 +24,24 @@ export const AuthGuard = ({ children, loginUrl = 'https://flavio1227.github.io/L
         setUser(currentUser);
         setLoading(false);
         
-        // Si no hay usuario, redirigir al login
-        if (!currentUser) {
+        // Si no hay usuario Y aún no hemos redirigido, redirigir al login
+        if (!currentUser && !hasRedirected.current) {
+          hasRedirected.current = true;
           // Guardar la URL actual para redirigir después del login
           const currentUrl = window.location.href;
           window.location.href = `${loginUrl}?redirect=${encodeURIComponent(currentUrl)}`;
         }
+        // Si HAY usuario, NO hacer nada - solo mostrar el contenido
+        // NO redirigir a ningún lado si el usuario está autenticado
       },
       (error) => {
         console.error('Error de autenticación:', error);
         setLoading(false);
-        // En caso de error, también redirigir al login
-        window.location.href = loginUrl;
+        // En caso de error, solo redirigir si no hemos redirigido ya
+        if (!hasRedirected.current) {
+          hasRedirected.current = true;
+          window.location.href = loginUrl;
+        }
       }
     );
 
