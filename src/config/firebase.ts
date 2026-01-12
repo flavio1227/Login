@@ -2,12 +2,13 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROJECT_ID.firebaseapp.com",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_PROJECT_ID.appspot.com",
-  messagingSenderId: "TU_MESSAGING_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyA_KRg3gquEfNTGVBpX5LXsy90kImNNYSc",
+  authDomain: "sigem-8c63e.firebaseapp.com",
+  projectId: "sigem-8c63e",
+  storageBucket: "sigem-8c63e.firebasestorage.app",
+  messagingSenderId: "17276488812",
+  appId: "1:17276488812:web:d1c6a6573240b3b94bdc49",
+  measurementId: "G-CDHXQFPS5F"
 };
 
 const app = initializeApp(firebaseConfig);
