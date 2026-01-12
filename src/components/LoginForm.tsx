@@ -43,6 +43,8 @@ const LoginForm = () => {
 
     try {
       await signIn(email, password);
+      // Si el login es exitoso, el usuario será redirigido automáticamente
+      // No necesitamos resetear loading aquí porque el componente se desmontará
     } catch (err: any) {
       setError(getErrorMessage(err.code));
       setLoading(false);
